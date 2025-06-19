@@ -8,7 +8,7 @@ spec:
       default: "false"
       description: "Enable debug mode"
     releaserc_url:
-      default: "https://gitlab.com/api/v4/projects/70975092/repository/files/_configs%2F.releaserc.js/raw?ref=feat/50"
+      default: "https://gitlab.com/api/v4/projects/70975092/repository/files/_configs%2F.releaserc.js/raw?ref=main"
       description: "The URL to the .releaserc.js file"
     dry_run:
       default: "false"
