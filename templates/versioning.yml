@@ -1,0 +1,69 @@
+---
+spec:
+  inputs:
+    docker_image:
+      default: "registry.gitlab.com/pl.rachuna-net/containers/semantic-release:1.0.0"
+      description: "The docker image to use for the job"
+    debug:
+      default: "false"
+      description: "Enable debug mode"
+    releaserc_url:
+      default: "https://gitlab.com/api/v4/projects/70975092/repository/files/_configs%2F.releaserc.js/raw?ref=feat/50"
+      description: "The URL to the .releaserc.js file"
+    dry_run:
+      default: "false"
+      description: "Enable dry run mode"
+---
+variables:
+  CONTAINER_IMAGE_SEMANTIC_RELEASE: $[[ inputs.docker_image ]]
+  DEBUG: $[[ inputs.debug ]]
+  VERSIONING_DEBUG: $[[ inputs.debug ]]
+  VERSIONING_RELEASERC_URL: $[[ inputs.releaserc_url ]]
+  VERSIONING_DRY_RUN: $[[ inputs.dry_run ]]
+
+include:
+  - local: /source/logo.yml
+  - local: /source/input_variables_versioning.yml
+  - local: /source/versioning-env.yml
+  - local: /source/output-variables.yml
+
+.versioning:base:
+  image: $CONTAINER_IMAGE_SEMANTIC_RELEASE
+  before_script:
+    - git config --global --add safe.directory ${CI_PROJECT_DIR}
+    - !reference [.logo]
+    - !reference [.input-variables-versioning]
+    - !reference [.versioning-env]
+  script:
+    - |
+      echo ""
+      echo -e "\033[1;33m===>\033[0m 🚀 Semantic release"
+      echo "  Using 'semantic-release' from https://github.com/semantic-release"
+
+      if [ ! -f "$CI_PROJECT_DIR/.releaserc" ]; then
+        curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" ${VERSIONING_RELEASERC_URL} --output $CI_PROJECT_DIR/.releaserc.js;
+      fi
+    - if [ "$CI_DEBUG_TRACE" == "true" ]; then debug="--debug"; fi
+    - if [ "$VERSIONING_DEBUG" == "true" ]; then debug="--debug"; fi
+    - if [ "$VERSIONING_DRY_RUN" == "true" ]; then dry_run="--dry-run"; fi
+    - semantic-release $debug $dry_run
+    - !reference [.output-variables]
+  artifacts:
+    reports:
+      dotenv: versioning.env
+    paths:
+      - CHANGELOG.md
+
+🕵 Set Version:
+  stage: prepare
+  variables:
+    VERSIONING_DRY_RUN: "true"
+  extends: ['.versioning:base']
+  rules:
+    - when: on_success
+
+📍 Publish Version:
+  stage: release
+  extends: ['.versioning:base']
+  rules:
+    - when: on_success

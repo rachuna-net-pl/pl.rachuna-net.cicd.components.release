@@ -1,0 +1,18 @@
+---
+.versioning-env:
+  - |
+    echo ""
+    echo "🚧 Enemercy create version"
+
+    export LAST_TAG=$(git describe --tags --abbrev=0)
+    if [[ -z $LAST_TAG ]]; then export LAST_TAG=1.0.0; fi
+
+
+    if [ ! -f "${CI_PROJECT_DIR}/versioning.env" ]; then
+    cat << EOF > ${CI_PROJECT_DIR}/versioning.env
+    RELEASE_CANDIDATE_VERSION=${LAST_TAG}-${CI_COMMIT_SHORT_SHA}
+    ARTIFACTS_TYPE=snapshot
+    JIRA_ISSUES_IDS=
+    EOF
+    fi
+    source ${CI_PROJECT_DIR}/versioning.env
