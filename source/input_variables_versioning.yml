@@ -1,0 +1,13 @@
+---
+.input-variables-versioning:
+  - |
+    echo ""
+    echo -e "\033[1;33m===>\033[0m 💾 Print set inputs Variables"
+    echo -e "┌─────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────┐"
+    printf "| %-35s | %-98s |\n" "Variable" "Value"
+    echo -e "├─────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤"
+    printf "| %-35s | %-98s |\n" "CONTAINER_IMAGE_SEMANTIC_RELEASE" $CONTAINER_IMAGE_SEMANTIC_RELEASE
+    printf "| %-35s | %-98s |\n" "DEBUG" $DEBUG
+    printf "| %-35s | %-98s |\n" "VERSIONING_RELEASERC_URL" $VERSIONING_RELEASERC_URL
+    printf "| %-35s | %-98s |\n" "VERSIONING_DRY_RUN" $VERSIONING_DRY_RUN
+    echo -e "└─────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘"
