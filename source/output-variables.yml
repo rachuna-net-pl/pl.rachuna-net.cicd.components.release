@@ -9,6 +9,7 @@
     printf "| %-35s | %-98s |\n"  "Variable" "Value"
     echo -e "├─────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤"
     printf "| %-35s | %-98s |\n"  "RELEASE_CANDIDATE_VERSION" "$RELEASE_CANDIDATE_VERSION"
+    printf "| %-35s | %-98s |\n"  "RELEASE_CANDIDATE_TAG" "$RELEASE_CANDIDATE_TAG"
     printf "| %-35s | %-98s |\n"  "ARTIFACTS_TYPE" "$ARTIFACTS_TYPE"
     printf "| %-35s | %-98s |\n"  "JIRA_ISSUES_IDS" "$JIRA_ISSUES_IDS"
     echo -e "└─────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘"
