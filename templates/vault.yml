@@ -14,7 +14,7 @@ spec:
       default: ""
       description: "The path to the secret in Vault"
     publish_value_variables_name:
-      default: "1.0.0"
+      default: "APPLICATION_VERSION"
       description: "Value to publish"
 ---
 variables:
