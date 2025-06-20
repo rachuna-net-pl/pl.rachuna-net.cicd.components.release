@@ -16,4 +16,3 @@
     JIRA_ISSUES_IDS=""
     EOF
     fi
-    source ${CI_PROJECT_DIR}/versioning.env
