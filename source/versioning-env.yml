@@ -11,8 +11,8 @@
     if [ ! -f "${CI_PROJECT_DIR}/versioning.env" ]; then
     cat << EOF > ${CI_PROJECT_DIR}/versioning.env
     RELEASE_CANDIDATE_VERSION=${LAST_TAG}-${CI_COMMIT_SHORT_SHA}
+    RELEASE_CANDIDATE_TAG=""
     ARTIFACTS_TYPE=snapshot
-    JIRA_ISSUES_IDS=
+    JIRA_ISSUES_IDS=""
     EOF
     fi
-    source ${CI_PROJECT_DIR}/versioning.env

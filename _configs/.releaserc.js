@@ -80,6 +80,7 @@ module.exports = {
         const uniqJiraList = Array.from(jiraSet)
         const environmentList = [
           { key: "RELEASE_CANDIDATE_VERSION", value: nextVersion },
+          { key: "RELEASE_CANDIDATE_TAG", value: 'v'+nextVersion },
           { key: "ARTIFACTS_TYPE", value: artifactType },
           { key: "JIRA_ISSUES_IDS", value: '"'+uniqJiraList.join(", ")+'"' }
         ]
