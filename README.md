@@ -6,8 +6,11 @@ Komponent do zarządzania wersjami i publikacji bibliotek i aplikacji na środow
 [[_TOC_]]
 
 ---
+## Vault
+::include{file=docs/vault.md}
 ## Versioning
 ::include{file=docs/versioning.md}
+
 ::include{file=.gitlab/contributions.md}
 ::include{file=.gitlab/license.md}
 ::include{file=.gitlab/authors.md}

@@ -1,0 +1,50 @@
+---
+spec:
+  inputs:
+    docker_image:
+      default: "registry.gitlab.com/pl.rachuna-net/containers/vault:1.0.0"
+      description: "The docker image to use for the job"
+    debug:
+      default: "false"
+      description: "Enable debug mode"
+    publish_mount_path:
+      default: "kv-gitlab"
+      description: "The mount path for Vault"
+    publish_vault_secret_path:
+      default: ""
+      description: "The path to the secret in Vault"
+    publish_value_variables_name:
+      default: "1.0.0"
+      description: "Value to publish"
+---
+variables:
+  CONTAINER_IMAGE_VAULT: $[[ inputs.docker_image ]]
+  PUBLISH_MOUNT_PATH: $[[ inputs.publish_mount_path ]]
+  PUBLISH_VAULT_SECRET_PATH: $[[ inputs.publish_vault_secret_path ]]
+  PUBLISH_VAULT_VALUE_VARIABLES_NAME: $[[ inputs.publish_value_variables_name ]]
+  DEBUG: $[[ inputs.debug ]]
+
+include:
+  - local: /source/logo.yml
+  - local: /source/input_variables_vault.yml
+
+.vault_publish_version:base:
+  image: $CONTAINER_IMAGE_VAULT
+  before_script:
+    - git config --global --add safe.directory ${CI_PROJECT_DIR}
+    - !reference [.logo]
+    - !reference [.input-variables-vault]
+  script:
+    - |
+      echo ""
+      echo -e "\033[1;33m===>\033[0m 🎉 Publish version in vault"
+      IFS=":" read -r path secret <<< "$PUBLISH_VAULT_SECRET_PATH"
+      vault kv patch -mount=$PUBLISH_MOUNT_PATH $path $secret="${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}"
+      echo -e "  👍 Publish version in vault success"
+
+
+🎉 Publish version in vault:
+  stage: release
+  extends: ['.vault_publish_version:base']
+  rules:
+    - when: on_success
