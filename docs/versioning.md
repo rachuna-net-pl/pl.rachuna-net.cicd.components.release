@@ -153,7 +153,7 @@ default:
     - onprem
 
 include:
-  - component: $CI_SERVER_FQDN/pl.rachuna-net/cicd/components/versioning/semantic-release@main
+  - component: $CI_SERVER_FQDN/pl.rachuna-net/cicd/components/release/semantic-release@main
 
 stages:
   - prepare
