@@ -79,19 +79,23 @@ W `.gitlab-ci.yml` projektu:
 
 ```yaml
 include:
-  - local: /templates/vault_publish.yml
+  - component: $CI_SERVER_FQDN/pl.rachuna-net/cicd/components/release/vault@$COMPONENT_VERSION_RELEASE
+    inputs:
+      docker_image: $CONTAINER_IMAGE_VAULT
 
 variables:
   RELEASE_CANDIDATE_VERSION: "1.0.0-abc123"
 
 🎉 Publish version in vault:
-  extends: ['.vault_publish_version:base']
   stage: release
+  needs:
+    - job: 🕵 Set Version
+    - job: 🌐 publish docker image
+      optional: true
   variables:
-    publish_vault_secret_path: "pl.rachuna-net:GITLAB-CI"
-    publish_value_variables_name: "RELEASE_CANDIDATE_VERSION"
-  rules:
-    - when: on_success
+    PUBLISH_VAULT_VALUE_VARIABLES_NAME: "$PUBLISH_VAULT_VALUE_VARIABLE"
+  rules: !reference [.rule:release:vault, rules]
+
 ```
 
 ---
