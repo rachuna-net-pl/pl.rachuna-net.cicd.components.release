@@ -17,6 +17,6 @@
     print_input_parameters VAULT_TOKEN "<< masked >>"
     print_input_parameters PUBLISH_MOUNT_PATH $PUBLISH_MOUNT_PATH
     print_input_parameters PUBLISH_VAULT_SECRET_PATH $PUBLISH_VAULT_SECRET_PATH
-    print_input_parameters PUBLISH_VALUE $${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}
+    print_input_parameters PUBLISH_VALUE "${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}"
     print_input_parameters DEBUG $DEBUG
     echo -e "└──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘"
