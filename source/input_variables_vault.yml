@@ -1,14 +1,22 @@
 ---
 .input-variables-vault:
   - |
+    print_input_parameters() {
+      if [ -n "$2" ]; then
+        printf "│ %-40s │ %-90s │\n" "$1" "$2"
+      fi
+    }
     echo ""
     echo -e "\033[1;33m===>\033[0m 💾 Print set inputs Variables"
-    echo -e "┌─────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────────┐"
-    printf "| %-35s | %-98s |\n" "Variable" "Value"
-    echo -e "├─────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────────┤"
-    printf "| %-35s | %-98s |\n" "CONTAINER_IMAGE_VAULT" $CONTAINER_IMAGE_VAULT
-    printf "| %-35s | %-98s |\n" "PUBLISH_MOUNT_PATH" $PUBLISH_MOUNT_PATH
-    printf "| %-35s | %-98s |\n" "PUBLISH_VAULT_SECRET_PATH" $PUBLISH_VAULT_SECRET_PATH
-    printf "| %-35s | %-98s |\n" "PUBLISH_VALUE" ${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}
-    printf "| %-35s | %-98s |\n" "DEBUG" $DEBUG
-    echo -e "└─────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘"
+    echo -e "┌──────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────┐"
+    printf "│ %-40s │ %-90s │\n" "Variable" "Value"
+    echo -e "├──────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────┤"
+    print_input_parameters GITLAB_CI_VERSION $GITLAB_CI_VERSION
+    echo -e "├──────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────┤"
+    print_input_parameters CONTAINER_IMAGE_VAULT $CONTAINER_IMAGE_VAULT
+    print_input_parameters VAULT_TOKEN "<< masked >>"
+    print_input_parameters PUBLISH_MOUNT_PATH $PUBLISH_MOUNT_PATH
+    print_input_parameters PUBLISH_VAULT_SECRET_PATH $PUBLISH_VAULT_SECRET_PATH
+    print_input_parameters PUBLISH_VALUE $${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}
+    print_input_parameters DEBUG $DEBUG
+    echo -e "└──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘"
