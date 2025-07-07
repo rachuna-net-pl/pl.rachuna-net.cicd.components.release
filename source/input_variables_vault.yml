@@ -11,7 +11,7 @@
     echo -e "┌──────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────┐"
     printf "│ %-40s │ %-90s │\n" "Variable" "Value"
     echo -e "├──────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────┤"
-    print_input_parameters GITLAB_CI_VERSION $GITLAB_CI_VERSION
+    print_input_parameters COMPONENT_VERSION_RELEASE $COMPONENT_VERSION_RELEASE
     echo -e "├──────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────┤"
     print_input_parameters CONTAINER_IMAGE_VAULT $CONTAINER_IMAGE_VAULT
     print_input_parameters VAULT_TOKEN "<< masked >>"
