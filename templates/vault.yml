@@ -37,6 +37,7 @@ include:
   script:
     - |
       echo ""
+      export VAULT_SKIP_VERIFY=true
       echo -e "\033[1;33m===>\033[0m 🎉 Publish version in vault"
       IFS=":" read -r path secret <<< "$PUBLISH_VAULT_SECRET_PATH"
       vault kv patch -mount=$PUBLISH_MOUNT_PATH $path $secret="${!PUBLISH_VAULT_VALUE_VARIABLES_NAME}"
