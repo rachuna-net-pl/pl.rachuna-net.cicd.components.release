@@ -1,5 +1,5 @@
 ---
-.function_print_row:
+.release:function_print_row:
   - >
     echo ""
 

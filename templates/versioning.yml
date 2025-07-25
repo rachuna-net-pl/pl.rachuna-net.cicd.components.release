@@ -16,6 +16,9 @@ spec:
     component_repo_branch:
       default: "main"
       description: "Gitlab component branch"
+    releaserc_path:
+      default: "_configs/.releaserc.js"
+      description: "The path to releaserc"
 
 ---
 variables:
@@ -25,6 +28,7 @@ variables:
   VERSIONING_DRY_RUN: $[[ inputs.dry_run ]]
   COMPONENT_REPO_NAMESPACE: $[[ inputs.component_repo_namespace ]]
   COMPONENT_REPO_BRANCH: $[[ inputs.component_repo_branch ]]
+  RELEASERC_FILE: $[[ inputs.releaserc_path ]]
 
 include:
   - local: /source/function_print_row.yml
@@ -38,7 +42,7 @@ include:
   before_script:
     - git config --global --add safe.directory ${CI_PROJECT_DIR}
     - !reference [.logo]
-    - !reference [.function_print_row]
+    - !reference [.release:function_print_row]
     - !reference [.versioning_input_variables]
     - !reference [.versioning_prepare]
   script:
