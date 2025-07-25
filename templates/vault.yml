@@ -28,7 +28,7 @@ include:
   - local: /source/logo.yml
   - local: /source/input_variables_vault.yml
 
-.vault_publish_version:base:
+.release:vault_publish_version:base:
   image: $CONTAINER_IMAGE_VAULT
   before_script:
     - git config --global --add safe.directory ${CI_PROJECT_DIR}
@@ -46,6 +46,6 @@ include:
 
 🎉 Publish version in vault:
   stage: release
-  extends: ['.vault_publish_version:base']
+  extends: ['.release:vault_publish_version:base']
   rules:
-    - when: on_success
+    - when: never

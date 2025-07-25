@@ -1,5 +1,5 @@
 ---
-.versioning_input_variables:
+.release:versioning_input_variables:
   - |
     echo ""
 
