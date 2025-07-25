@@ -33,7 +33,7 @@ include:
   before_script:
     - git config --global --add safe.directory ${CI_PROJECT_DIR}
     - !reference [.logo]
-    - !reference [.input-variables-vault]
+    - !reference [.release:input-variables-vault]
   script:
     - |
       echo ""
