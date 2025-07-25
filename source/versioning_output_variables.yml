@@ -1,5 +1,5 @@
 ---
-.versioning_output_variables:
+.release:versioning_output_variables:
   - |
     echo ""
 

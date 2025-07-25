@@ -1,5 +1,5 @@
 ---
-.versioning_prepare:
+.release:versioning_prepare:
   - |
     echo ""
     echo -e "\033[1;33m===>\033[0m 🔧  setting GITLAB_TOKEN"

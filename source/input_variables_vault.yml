@@ -1,5 +1,5 @@
 ---
-.input-variables-vault:
+.release:input-variables-vault:
   - |
     print_input_parameters() {
       if [ -n "$2" ]; then

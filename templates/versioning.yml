@@ -37,14 +37,14 @@ include:
   - local: /source/versioning_prepare.yml
   - local: /source/versioning_output_variables.yml
 
-.versioning:base:
+.release:versioning:base:
   image: $CONTAINER_IMAGE_SEMANTIC_RELEASE
   before_script:
     - git config --global --add safe.directory ${CI_PROJECT_DIR}
     - !reference [.logo]
     - !reference [.release:function_print_row]
-    - !reference [.versioning_input_variables]
-    - !reference [.versioning_prepare]
+    - !reference [.release:versioning_input_variables]
+    - !reference [.release:versioning_prepare]
   script:
     - |
       echo ""
@@ -55,7 +55,7 @@ include:
     - if [ "$VERSIONING_DEBUG" == "true" ]; then debug="--debug"; fi
     - if [ "$VERSIONING_DRY_RUN" == "true" ]; then dry_run="--dry-run"; fi
     - semantic-release $debug $dry_run
-    - !reference [.versioning_output_variables]
+    - !reference [.release:versioning_output_variables]
   artifacts:
     reports:
       dotenv: versioning.env
@@ -66,12 +66,12 @@ include:
   stage: prepare
   variables:
     VERSIONING_DRY_RUN: "true"
-  extends: ['.versioning:base']
+  extends: ['.release:versioning:base']
   rules:
     - when: on_success
 
 📍 Publish Version:
   stage: release
-  extends: ['.versioning:base']
+  extends: ['.release:versioning:base']
   rules:
     - when: on_success
