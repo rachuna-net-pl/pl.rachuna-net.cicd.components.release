@@ -14,4 +14,5 @@
     print_row_parameters DEBUG $DEBUG
     print_row_parameters COMPONENT_REPO_NAMESPACE $COMPONENT_REPO_NAMESPACE
     print_row_parameters COMPONENT_REPO_BRANCH $COMPONENT_REPO_BRANCH
+    print_row_parameters RELEASERC_FILE $RELEASERC_FILE
     echo -e "└──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘"
