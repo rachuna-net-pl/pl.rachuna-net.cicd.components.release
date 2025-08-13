@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "gitlab>pl.rachuna-net/discipline//renovate/preset/gitlab-component.json"
+  ]
+}

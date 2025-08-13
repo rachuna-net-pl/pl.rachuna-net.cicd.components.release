@@ -1,0 +1,40 @@
+---
+.release:versioning_prepare:
+  - |
+    echo ""
+    echo -e "\033[1;33m===>\033[0m 🔧  setting GITLAB_TOKEN"
+    if [[ -z "$GITLAB_TOKEN" ]]; then
+      echo "⚠️ GITLAB_TOKEN nie jest ustawione, spróbuje pobrać z vault"
+      if [[ -z "$VAULT_ADDR" ]]; then
+        echo "❌ Błąd: VAULT_ADDR nie jest ustawione"
+        exit 1
+      fi
+      if [[ -z "$VAULT_TOKEN" ]]; then
+        echo "❌ Błąd: VAULT_TOKEN nie jest ustawione"
+        exit 1
+      fi
+
+      export GITLAB_TOKEN=$(curl -s -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_ADDR/v1/kv-gitlab/data/pl.rachuna-net/auth/gitlab | jq -r .data.data.GITLAB_TOKEN)
+      echo "🔑 GITLAB_TOKEN pobrano z vault"
+    fi
+
+    echo -e "\033[1;33m===>\033[0m ⚙️  Download .releaserc.js"
+    if [ ! -f "$CI_PROJECT_DIR/.releaserc" ]; then
+      VERSIONING_RELEASERC_URL="$CI_SERVER_URL/${COMPONENT_REPO_NAMESPACE}/-/raw/${COMPONENT_REPO_BRANCH}/${RELEASERC_FILE}"
+      curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" ${VERSIONING_RELEASERC_URL} --output $CI_PROJECT_DIR/.releaserc.js;
+    fi
+
+    echo -e "\033[1;33m===>\033[0m 🚧  Enemercy create version"
+
+    export LAST_TAG=$(git describe --tags --abbrev=0)
+
+    if [[ -z $LAST_TAG ]]; then export LAST_TAG=1.0.0; fi
+    if [ ! -f "${CI_PROJECT_DIR}/versioning.env" ]; then
+
+    cat << EOF > ${CI_PROJECT_DIR}/versioning.env
+    RELEASE_CANDIDATE_VERSION=${LAST_TAG}-${CI_COMMIT_SHORT_SHA}
+    RELEASE_CANDIDATE_TAG=""
+    ARTIFACTS_TYPE=snapshot
+    JIRA_ISSUES_IDS=""
+    EOF
+    fi

@@ -1,0 +1,15 @@
+---
+.release:versioning_output_variables:
+  - |
+    echo ""
+
+    echo -e "\033[1;33m===>\033[0m 💾 Print set output Variables"
+    source ${CI_PROJECT_DIR}/versioning.env
+    echo -e "┌──────────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────┐"
+    printf "│ %-40s │ %-90s │\n" "Variable" "Value"
+    echo -e "├──────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────┤"
+    print_row_parameters RELEASE_CANDIDATE_VERSION $RELEASE_CANDIDATE_VERSION
+    print_row_parameters RELEASE_CANDIDATE_TAG $RELEASE_CANDIDATE_TAG
+    print_row_parameters ARTIFACTS_TYPE $ARTIFACTS_TYPE
+    print_row_parameters JIRA_ISSUES_IDS $JIRA_ISSUES_IDS
+    echo -e "└──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘"

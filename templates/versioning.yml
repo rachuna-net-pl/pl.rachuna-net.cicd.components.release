@@ -1,0 +1,83 @@
+---
+spec:
+  inputs:
+    docker_image:
+      default: "registry.gitlab.com/pl.rachuna-net/containers/semantic-release:2.0.0"
+      description: "The docker image to use for the job"
+    logo_url:
+      default: https://gitlab.com/pl.rachuna-net/cicd/gitlab-ci/-/raw/main/_configs/_logo?ref_type=heads
+      description: "Set logo url"
+    debug:
+      default: "false"
+      description: "Enable debug mode"
+    dry_run:
+      default: "false"
+      description: "Enable dry run mode"
+    component_repo_namespace:
+      default: "pl.rachuna-net/cicd/components/release"
+      description: "GitLab namespace and path to the component's repository."
+    component_repo_branch:
+      default: "main"
+      description: "Gitlab component branch"
+    releaserc_path:
+      default: "_configs/release/.releaserc.js"
+      description: "The path to releaserc"
+
+---
+variables:
+  CONTAINER_IMAGE_SEMANTIC_RELEASE: $[[ inputs.docker_image ]]
+  LOGO_URL: $[[ inputs.logo_url ]]
+  DEBUG: $[[ inputs.debug ]]
+  VERSIONING_DEBUG: $[[ inputs.debug ]]
+  VERSIONING_DRY_RUN: $[[ inputs.dry_run ]]
+  COMPONENT_REPO_NAMESPACE: $[[ inputs.component_repo_namespace ]]
+  COMPONENT_REPO_BRANCH: $[[ inputs.component_repo_branch ]]
+  RELEASERC_FILE: $[[ inputs.releaserc_path ]]
+
+include:
+  - local: /source/release/_function_print_row.yml
+  - local: /source/release/versioning_input_variables.yml
+  - local: /source/release/versioning_prepare.yml
+  - local: /source/release/versioning_output_variables.yml
+
+.release:versioning:base:
+  image: $CONTAINER_IMAGE_SEMANTIC_RELEASE
+  before_script:
+    - |
+      git config --global --add safe.directory ${CI_PROJECT_DIR}
+      [ ! -z "${LOGO_URL}" ] && curl -s "${LOGO_URL}"
+    - !reference [.prepare:_function_print_row]
+    - !reference [.release:versioning_input_variables]
+    - !reference [.release:versioning_prepare]
+  script:
+    - |
+      echo ""
+      echo -e "\033[1;33m===>\033[0m 🚀 Semantic release"
+      echo "   Using 'semantic-release' from https://github.com/semantic-release"
+
+      [ "$CI_DEBUG_TRACE" == "true" ] && debug="--debug"
+      [ "$VERSIONING_DEBUG" == "true" ] && debug="--debug"
+      [ "$VERSIONING_DRY_RUN" == "true" ] && dry_run="--dry-run"
+      semantic-release $debug $dry_run
+    - !reference [.release:versioning_output_variables]
+  artifacts:
+    reports:
+      dotenv: versioning.env
+    paths:
+      - CHANGELOG.md
+
+
+🕵 Set Version:
+  stage: prepare
+  variables:
+    VERSIONING_DRY_RUN: "true"
+  extends: ['.release:versioning:base']
+  rules:
+    - when: on_success
+
+
+📍 Publish Version:
+  stage: release
+  extends: ['.release:versioning:base']
+  rules:
+    - when: on_success

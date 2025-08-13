@@ -1,0 +1,10 @@
+---
+.release:_function_print_row:
+  - >
+    echo ""
+
+    print_row_parameters() {
+      if [ -n "$2" ]; then
+        printf "│ %-40s │ %-90s │\n" "$1" "$2"
+      fi
+    }
